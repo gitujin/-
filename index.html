@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다이로움 페이백</title>
+    <meta name="aythor" content="송유진" />
+    <meta name="description" content="다이로움 페이백 가능지점" />
+    <link rel="stylesheet" href="style.css" />
+    <link href="주유소.png" rel="shortcut icon" type="image/x-icon">
+</head>
+
+<body>
+    <nav>
+        <div class="inner">
+            <div class="nav-container">
+                <h1 class="nav-title">다이로움 지도</h1>
+                <button class="nav-contact">Contact</button>
+            </div>
+        </div>
+    </nav>    
+
+    <main>
+        <!-- 카테고리 -->
+        <section id="category">
+            <div class="inner">
+                <div class="category-container">
+                    <h2 class="category-title">원하는 카테고리를 선택해보세요</h2>
+                    <div class="category-list">
+                        <button class="category-item">전체 주유소</button>
+                        <button class="category-item">페이백 주유소</button>
+                        <button class="category-item">전체 마트</button>
+                        <button class="category-item">페이백 마트</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 카카오지도 -->
+            <div id="map" class="inner"></div>
+    </main>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8e13ffd8f4a2493c9908639e5b9fe61c&libraries=services"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
