@@ -29,30 +29,25 @@ const dataSet = [
     {
         title: "싱글벙글주유소",
         address: "전북 익산시 익산대로 343",
-        url: "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%EC%8B%B1%EA%B8%80%EB%B2%99%EA%B8%80+%EC%A3%BC%EC%9C%A0%EC%86%8C",
         category: "페이백 주유소"
     },
     {
-        title: "금마하나로마트",
+        title: "금마 하나로마트",
         address: "전북 익산시 금마면 금마길 37",
-        url: "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%A0%84%EB%B6%81+%EC%9D%B5%EC%82%B0%EC%8B%9C+%EA%B8%88%EB%A7%88%EB%A9%B4+%EA%B8%88%EB%A7%88%EA%B8%B8+37&oquery=%EC%A0%84%EB%B6%81+%EC%9D%B5%EC%82%B0%EC%8B%9C+%EA%B8%88%EB%A7%88%EB%A9%B4+%EA%B8%88%EB%A7%88%EA%B8%B8+37++%5B%EC%B6%9C%EC%B2%98%5D+%EC%9D%B5%EC%82%B0+%EA%B8%88%EB%A7%88+%EB%A1%9C%EC%BB%AC%ED%91%B8%EB%93%9C+%ED%95%98%EB%82%98%EB%A1%9C%EB%A7%88%ED%8A%B8+%EC%97%86%EB%8A%94%EA%B1%B0+%EC%97%86%EB%8A%94+%EC%9E%A5%ED%84%B0%EB%A7%88%ED%8A%B8%7C%EC%9E%91%EC%84%B1%EC%9E%90+%EB%B9%B5%EC%9D%84+%EC%82%AC%EB%9E%91%ED%95%98%EB%8A%94+%EC%82%AC%EB%9E%8C&tqi=hwUHEdp0YiRss6BVnt4ssssst7N-059908",
+        category: "페이백 마트",
+    },
+    {
+        title: "서동공원주유소",
+        address: "전라북도 익산시 금마면 고도길 150",
         category: "페이백 마트",
     },
 ];
 
+/*
+3. 여러개 마커 찍기
+*/
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
-
-async function setMap(){
-    for (var i = 0; i < dataSet.length; i ++) {
-        // 마커를 생성합니다
-        let coords = await getCoordsByAddress(dataSet[i].address);
-        var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: coords, // 마커를 표시할 위치
-        });    
-    }
-}
 
 // 주소-좌표 변환 함수
 function getCoordsByAddress(address){
@@ -72,3 +67,56 @@ function getCoordsByAddress(address){
 }
 
 setMap();
+
+/*
+4. 마커에 인포윈도우 붙이기
+*/
+
+async function setMap(){
+    for (var i = 0; i < dataSet.length; i++) {
+        // 마커를 생성합니다
+        let coords = await getCoordsByAddress(dataSet[i].address);
+        var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: coords, // 마커를 표시할 위치
+        });    
+
+    // 커스텀 오버레이를 생성합니다
+    var CustomOverlay = new kakao.maps.CustomOverlay({
+        position: coords,
+        clickable: true,
+        xAnchor: 0.5,
+        yAnchor: 1.4
+    });
+
+    // 커스텀 오버레이 엘리먼트를 만들고, 컨텐츠를 추가합니다
+    var contentsHead = document.createElement("div");
+    contentsHead.className = "head";
+
+    var contentsTitle = document.createElement("a");
+    contentsTitle.className = "title";
+    contentsTitle.innerHTML = dataSet[i].title;
+
+    var contentsDesc = document.createElement("div");
+    contentsDesc.className = "desc";
+
+    var contentsAddress = document.createElement("span");
+    contentsAddress.className = "address";
+    contentsAddress.innerHTML = dataSet[i].address;
+
+    contentsHead.append(contentsTitle, contentsDesc);
+    contentsDesc.append(contentsAddress);
+
+    CustomOverlay.setContent(contentsHead);
+
+    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+    kakao.maps.event.addListener(marker, 'click', function() {
+        CustomOverlay.setMap(map);
+    });
+
+    // 맵을 클릭했을 때 커스텀 오버레이를 닫습니다
+    kakao.maps.event.addListener(map, 'click', function() {
+        CustomOverlay.setMap(null);
+    });
+    }
+}
