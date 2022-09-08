@@ -117,6 +117,7 @@ async function setMap(){
         }
         customOverlay.setMap(map);
         this.clickedOveray = customOverlay;
+        map.panTo(coords);
       })
       kakao.maps.event.addListener(map, "click", function () {
         customOverlay.setMap(null);
