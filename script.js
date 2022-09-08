@@ -22,7 +22,7 @@ var zoomControl = new kakao.maps.ZoomControl();
 map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
 /*
-2. 더미데이터 준비하기 (제목, 주소, url, 카테고리)
+2. 더미데이터 준비하기 (제목, 주소, 카테고리)
 */
 
 const dataSet = [
@@ -73,16 +73,18 @@ setMap();
 */
 
 async function setMap(){
-    for (var i = 0; i < dataSet.length; i++) {
+    for (let value of dataSet) {
+
         // 마커를 생성합니다
-        let coords = await getCoordsByAddress(dataSet[i].address);
+        let coords = await getCoordsByAddress(value.address);
+        
         var marker = new kakao.maps.Marker({
         map: map, // 마커를 표시할 지도
         position: coords, // 마커를 표시할 위치
         });    
 
     // 커스텀 오버레이를 생성합니다
-    var CustomOverlay = new kakao.maps.CustomOverlay({
+    let customOverlay = new kakao.maps.CustomOverlay({
         position: coords,
         clickable: true,
         xAnchor: 0.5,
@@ -95,28 +97,29 @@ async function setMap(){
 
     var contentsTitle = document.createElement("a");
     contentsTitle.className = "title";
-    contentsTitle.innerHTML = dataSet[i].title;
+    contentsTitle.innerHTML = value.title;
 
     var contentsDesc = document.createElement("div");
     contentsDesc.className = "desc";
 
     var contentsAddress = document.createElement("span");
     contentsAddress.className = "address";
-    contentsAddress.innerHTML = dataSet[i].address;
+    contentsAddress.innerHTML = value.address;
 
     contentsHead.append(contentsTitle, contentsDesc);
     contentsDesc.append(contentsAddress);
 
-    CustomOverlay.setContent(contentsHead);
+    customOverlay.setContent(contentsHead);
 
-    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-    kakao.maps.event.addListener(marker, 'click', function() {
-        CustomOverlay.setMap(map);
-    });
-
-    // 맵을 클릭했을 때 커스텀 오버레이를 닫습니다
-    kakao.maps.event.addListener(map, 'click', function() {
-        CustomOverlay.setMap(null);
-    });
+    kakao.maps.event.addListener(marker, "click", () => {
+        if (this.clickedOveray) {
+          this.clickedOveray.setMap(null);
+        }
+        customOverlay.setMap(map);
+        this.clickedOveray = customOverlay;
+      })
+      kakao.maps.event.addListener(map, "click", function () {
+        customOverlay.setMap(null);
+      })
     }
 }
