@@ -29,17 +29,17 @@ const dataSet = [
     {
         title: "싱글벙글주유소",
         address: "전북 익산시 익산대로 343",
-        category: "페이백 주유소"
+        category: "페이백 주유소",
     },
     {
         title: "금마 하나로마트",
         address: "전북 익산시 금마면 금마길 37",
-        category: "페이백 마트",
+        category: "페이백 안되는 곳",
     },
     {
         title: "서동공원주유소",
         address: "전라북도 익산시 금마면 고도길 150",
-        category: "페이백 마트",
+        category: "페이백 주유소",
     },
 ];
 
@@ -66,13 +66,13 @@ function getCoordsByAddress(address){
     });
 }
 
-setMap();
+setMap(dataSet);
 
 /*
 4. 마커에 인포윈도우 붙이기
 */
 
-async function setMap(){
+async function setMap(dataSet){
     for (let value of dataSet) {
 
         // 마커를 생성합니다
@@ -82,6 +82,8 @@ async function setMap(){
         map: map, // 마커를 표시할 지도
         position: coords, // 마커를 표시할 위치
         });    
+        
+        markerArray.push(marker);
 
     // 커스텀 오버레이를 생성합니다
     let customOverlay = new kakao.maps.CustomOverlay({
@@ -122,5 +124,50 @@ async function setMap(){
       kakao.maps.event.addListener(map, "click", function () {
         customOverlay.setMap(null);
       })
+    }
+}
+
+/*
+5. 카테고리 분류
+*/
+
+// 카테고리 
+const categoryMap = {
+    allGasStation : "전체 주유소",
+    payBackGas : "페이백 주유소",
+    noPayBack : "페이백 안되는 곳",
+};
+
+const categoryList = document.querySelector(".category-list");
+categoryList.addEventListener("click", categoryHandler);
+
+function categoryHandler(event){
+    const categoryId = event.target.id;
+    const category = categoryMap[categoryId];
+
+    // 데이터 분류
+    let categorizedDataSet = [];
+    for (let data of dataSet){
+        if(data.category === category) {
+            categorizedDataSet.push(data);
+        }
+    }
+
+    // 기존 마커 삭제
+    closeMarker();
+
+    // 기존 인포윈도우 닫기
+    kakao.maps.event.addListener(map, "click", function () {
+        customOverlay.setMap(null);
+    });
+
+    setMap(categorizedDataSet);
+
+}
+
+let markerArray = [];
+function closeMarker(){
+    for(marker of markerArray){
+        marker.setMap(null);
     }
 }
