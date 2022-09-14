@@ -78,7 +78,7 @@ async function setMap(dataSet){
         // 마커를 생성합니다
         let coords = await getCoordsByAddress(value.address);
         
-        var marker = new kakao.maps.Marker({
+        let marker = new kakao.maps.Marker({
         map: map, // 마커를 표시할 지도
         position: coords, // 마커를 표시할 위치
         });    
@@ -94,17 +94,17 @@ async function setMap(dataSet){
     });
 
     // 커스텀 오버레이 엘리먼트를 만들고, 컨텐츠를 추가합니다
-    var contentsHead = document.createElement("div");
+    let contentsHead = document.createElement("div");
     contentsHead.className = "head";
 
-    var contentsTitle = document.createElement("a");
+    let contentsTitle = document.createElement("a");
     contentsTitle.className = "title";
     contentsTitle.innerHTML = value.title;
 
-    var contentsDesc = document.createElement("div");
+    let contentsDesc = document.createElement("div");
     contentsDesc.className = "desc";
 
-    var contentsAddress = document.createElement("span");
+    let contentsAddress = document.createElement("span");
     contentsAddress.className = "address";
     contentsAddress.innerHTML = value.address;
 
