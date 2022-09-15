@@ -38,6 +38,7 @@ async function getDataSet(category){
         data: {},
     });
 
+    // console.log(dataSet.data.result);
     return dataSet.data.result;
 }
 
@@ -72,12 +73,21 @@ function getCoordsByAddress(address){
 async function setMap(dataSet){
     for (let value of dataSet) {
 
+    var imageSrc = `https://i.ibb.co/X73nkP6/map-marker-1.png`, // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
+    //imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
+    markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 마커가 표시될 위치입니다
+
         // 마커를 생성합니다
         let coords = await getCoordsByAddress(value.address);
         
         let marker = new kakao.maps.Marker({
         map: map, // 마커를 표시할 지도
         position: coords, // 마커를 표시할 위치
+        image:markerImage
         });    
 
         markerArray.push(marker);
@@ -87,7 +97,7 @@ async function setMap(dataSet){
         position: coords,
         clickable: true,
         xAnchor: 0.5,
-        yAnchor: 1.4
+        yAnchor: 1.3
     });
 
     // 커스텀 오버레이 엘리먼트를 만들고, 컨텐츠를 추가합니다
@@ -146,6 +156,7 @@ async function categoryHandler(event){
 
     const categoryId = event.target.id;
     const category = categoryMap[categoryId];
+    console.log(category);
 
     try {
     // 데이터 분류
