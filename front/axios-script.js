@@ -79,7 +79,7 @@ async function setMap(dataSet){
         map: map, // 마커를 표시할 지도
         position: coords, // 마커를 표시할 위치
         });    
-        
+
         markerArray.push(marker);
 
     // 커스텀 오버레이를 생성합니다
@@ -109,6 +109,8 @@ async function setMap(dataSet){
     contentsDesc.append(contentsAddress);
 
     customOverlay.setContent(contentsHead);
+
+    customOverlayArray.push(customOverlay);
 
     kakao.maps.event.addListener(marker, "click", () => {
         if (this.clickedOveray) {
@@ -152,13 +154,9 @@ async function categoryHandler(event){
     // 기존 마커 삭제
     closeMarker();
 
-    // 맵을 클릭했을 때 커스텀 오버레이를 닫습니다
-    kakao.maps.event.addListener(map, "click", function () {
-        if (this.clickedOveray) {
-            this.clickedOveray.setMap(null);
-          }
-        closeCustomArr();
-      });
+    // 인포윈도우 삭제
+    closeCustomArr();
+    
 
     setMap(categorizedDataSet);
 

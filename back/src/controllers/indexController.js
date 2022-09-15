@@ -14,7 +14,7 @@ exports.readDairoum = async function (req, res) {
     const validCategory = [
       "전체 주유소",
       "페이백 주유소",
-      "페이백 안되는 곳",
+      "페이백 제외 지점",
     ];
 
     if(!validCategory.includes(category)){
