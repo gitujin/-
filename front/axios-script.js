@@ -38,7 +38,6 @@ async function getDataSet(category){
         data: {},
     });
 
-    // console.log(dataSet.data.result);
     return dataSet.data.result;
 }
 
@@ -85,10 +84,11 @@ var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
         let coords = await getCoordsByAddress(value.address);
         
         let marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
+       map: map, // 마커를 표시할 지도
         position: coords, // 마커를 표시할 위치
         image:markerImage
         });    
+
 
         markerArray.push(marker);
 
@@ -152,11 +152,10 @@ const categoryMap = {
 const categoryList = document.querySelector(".category-list");
 categoryList.addEventListener("click", categoryHandler);
 
-async function categoryHandler(event){
-
+async function categoryHandler(event){ //카테고리 클릭했을 때
+    
     const categoryId = event.target.id;
     const category = categoryMap[categoryId];
-    console.log(category);
 
     try {
     // 데이터 분류
@@ -188,15 +187,3 @@ function closeCustomArr(){
     for(customOverlay of customOverlayArray)
     customOverlay.setMap(null);
 }
-
-async function setting(){
-    try {
-        const dataSet = await getDataSet();
-        setMap(dataSet);
-    } catch (error) {
-        console.error(error);
-    }
-    
-}
-
-setting();

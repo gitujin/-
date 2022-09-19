@@ -66,7 +66,7 @@ function getCoordsByAddress(address){
     });
 }
 
-setMap(dataSet);
+//setMap(dataSet);
 
 /*
 4. 마커에 인포윈도우 붙이기
@@ -146,7 +146,7 @@ function categoryHandler(event){
     const category = categoryMap[categoryId];
 
     // 데이터 분류
-    let categorizedDataSet = [];
+    let categorizedDataSet = []; // 카테고리 누르면 category에 맞는 데이터 들어감
     for (let data of dataSet){
         if(data.category === category) {
             categorizedDataSet.push(data);
